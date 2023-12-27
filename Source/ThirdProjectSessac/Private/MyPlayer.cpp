@@ -29,6 +29,19 @@ AMyPlayer::AMyPlayer()
 	}
 	
 
+	//일단 연습용 손 장착
+	RightHand = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("RightHand"));
+	RightHand->SetupAttachment(RootComponent);
+	ConstructorHelpers::FObjectFinder<USkeletalMesh> RightMesh(TEXT("/Script/Engine.SkeletalMesh'/Game/A_GDH/SkeletalMesh/SM_RightHand_GDH.SM_RightHand_GDH'"));
+	if (RightMesh.Succeeded())
+	{
+		RightHand->SetSkeletalMesh(RightMesh.Object);
+		RightHand->SetRelativeLocationAndRotation(FVector(25,15,6),FRotator(90,0,80));
+		/*(X = 24.554299, Y = 14.710379, Z = 6.401193)
+		(Pitch = 90.000000, Yaw = 0.000000, Roll = 79.999999)*/
+	}
+
+
 }
 
 // Called when the game starts or when spawned
