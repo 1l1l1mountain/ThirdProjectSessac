@@ -4,6 +4,7 @@
 #include "PlayerFunction.h"
 #include "MyPlayer.h"
 #include "EnhancedInputComponent.h"
+#include "Weapon.h"
 
 // Sets default values for this component's properties
 UPlayerFunction::UPlayerFunction()
@@ -49,17 +50,56 @@ void UPlayerFunction::SetupPlayerInputComponent( UEnhancedInputComponent* Enhanc
 
 void UPlayerFunction::Grabbed()
 {
+
+	if (CurrentWeapon != nullptr) return;
 	UWorld* world = GetWorld();
+
+	//오버랩 스피어 (라인 트레이싱 개념)
+	TArray<FOverlapResult> hitInfos;
+	FVector StartLoc = Player->RightHand->GetComponentLocation();
+	FQuat StartDir = Player->RightHand->GetComponentQuat(); //FQuat가 제대로 무슨 의미 일까? 공부하기
+	//감지된 것이 있을때
+	if(world->OverlapMultiByProfile(hitInfos,StartLoc,StartDir,FName("PlayerWeapon"),FCollisionShape::MakeSphere(25.0f)))
+	{
+	UE_LOG(LogTemp, Warning, TEXT("Exec!!")); 
+	
+	float MinDistance = 25.0f;
+	int32 idx = 0;
+	
+	// 어떤 물체인지 고르기 (가장 가까운 물체)
+	for (int32 i = 0;i < hitInfos.Num() - 1;i++)
+	{
+		//감지된 애가 무기일때만 비교
+		if (hitInfos[i].GetActor()->IsA<AWeapon>())
+		{
+			float dist = FVector::Distance(hitInfos[i].GetActor()->GetActorLocation(), StartLoc);
+			
+			if (dist < MinDistance)
+			{
+				MinDistance = dist;
+				idx = dist;
+			}
+
+		}
+
+	}
+	
+	CurrentWeapon = Cast<AWeapon>(hitInfos[idx].GetActor());
 	if (CurrentWeapon != nullptr)
 	{
 		
-
-
-
+		CurrentWeapon->Grabbed(Player->RightHand,EAttachmentRule::SnapToTarget); //그랩함수 구현 완료
 		UE_LOG(LogTemp, Warning, TEXT("Grabbed!!")); //추상화
 	
 	
 	}
+	
+	
+	
+	
+	}
+
+	DrawDebugSphere(world,StartLoc, 25.0f,30, FColor::Green ,false, 3, 0 ,1 );//세그먼트 파라미터는 뭐지?
 	
 }
 

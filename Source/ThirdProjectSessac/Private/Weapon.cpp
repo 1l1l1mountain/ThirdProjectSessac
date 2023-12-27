@@ -39,4 +39,26 @@ void AWeapon::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 }
+//어렵다 암기
+void AWeapon::Grabbed(USkeletalMeshComponent* SkeletalComp, EAttachmentRule AttachmentRules)
+{
+	BoxComp->SetSimulatePhysics(false);
+
+
+	if (AttachmentRules == EAttachmentRule::KeepWorld)
+	{
+
+		FAttachmentTransformRules rules = FAttachmentTransformRules::KeepWorldTransform;
+		AttachToComponent(SkeletalComp, rules);
+
+	}
+	else if (AttachmentRules == EAttachmentRule::SnapToTarget)
+	{
+
+		FAttachmentTransformRules rules = FAttachmentTransformRules::SnapToTargetNotIncludingScale;//스케일 건들지 않고라는데 잘 모르겠음..
+		AttachToComponent(SkeletalComp, rules,FName("GrabSocket"));
+		SetActorRelativeLocation(LocationOffset);
+	
+	}
+}
 
