@@ -32,7 +32,11 @@ public:
 
 	void SetupPlayerInputComponent(class UEnhancedInputComponent* EnhancedInputComponent,TArray <class UInputAction*> inputs);
 
-
 	void Grabbed();
 	void Dettached();
+	
+	class AWeapon* CurrentWeapon;
+
+
+
 };

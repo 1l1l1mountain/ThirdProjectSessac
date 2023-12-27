@@ -49,14 +49,24 @@ void UPlayerFunction::SetupPlayerInputComponent( UEnhancedInputComponent* Enhanc
 
 void UPlayerFunction::Grabbed()
 {
+	UWorld* world = GetWorld();
+	if (CurrentWeapon != nullptr)
+	{
+		
 
-	UE_LOG(LogTemp, Warning, TEXT("Grabbed!!"));
+
+
+		UE_LOG(LogTemp, Warning, TEXT("Grabbed!!")); //추상화
+	
+	
+	}
+	
 }
 
 void UPlayerFunction::Dettached()
 {
 
-	UE_LOG(LogTemp, Warning, TEXT("Dettached!!"));
+	UE_LOG(LogTemp, Warning, TEXT("Dettached!!"));//추상화
 }
 
 //기능 분할법
