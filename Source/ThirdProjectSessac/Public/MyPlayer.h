@@ -29,14 +29,26 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings|Components")
 	class UCameraComponent* CameraComp;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings|Components")
+	class USkeletalMeshComponent* RightHand;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings|Components")
+	class UPlayerFunction* FunctionComp;
+	
 	
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings|Inputs")
 	class UInputMappingContext* Imc;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings|Inputs")
+	
+	
+	
+	/*UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings|Inputs")
 	class UInputAction * IA_MoveInput;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings|Inputs")
-	class UInputAction* IA_MouseInput;
+	class UInputAction* IA_MouseInput;*/
+	//--> 아래의 배열로 이동
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings|Inputs")
+	TArray <class UInputAction*> inputs;
 
 
 

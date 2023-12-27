@@ -6,6 +6,7 @@
 #include "Engine/SkeletalMesh.h"
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
+#include "PlayerFunction.h"
 
 //?? 헤더에 추가하면 따로 추가하지 않아도 되는건가 ??
 //#include "InputActionValue.h" 
@@ -28,6 +29,22 @@ AMyPlayer::AMyPlayer()
 		GetMesh()->SetRelativeLocationAndRotation(FVector(-30,0,30),FRotator(0,-90,0));
 	}
 	
+
+	//일단 연습용 손 장착
+	RightHand = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("RightHand"));
+	RightHand->SetupAttachment(RootComponent);
+	ConstructorHelpers::FObjectFinder<USkeletalMesh> RightMesh(TEXT("/Script/Engine.SkeletalMesh'/Game/A_GDH/SkeletalMesh/SM_RightHand_GDH.SM_RightHand_GDH'"));
+	if (RightMesh.Succeeded())
+	{
+		RightHand->SetSkeletalMesh(RightMesh.Object);
+		RightHand->SetRelativeLocationAndRotation(FVector(25,15,6),FRotator(90,0,80));
+		/*(X = 24.554299, Y = 14.710379, Z = 6.401193)
+		(Pitch = 90.000000, Yaw = 0.000000, Roll = 79.999999)*/
+	}
+
+
+	//액터 컴포넌트 가지고 있기
+	FunctionComp = CreateDefaultSubobject<UPlayerFunction>(TEXT("FunctionComp"));
 
 }
 
@@ -72,8 +89,14 @@ void AMyPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	if (enhancedInputComponent != nullptr)
 	{
 		//함수 이벤트화
-		enhancedInputComponent->BindAction(IA_MoveInput,ETriggerEvent::Triggered,this,&AMyPlayer::MoveInput);
-		enhancedInputComponent->BindAction(IA_MouseInput, ETriggerEvent::Triggered, this, &AMyPlayer::MouseInput);
+		enhancedInputComponent->BindAction(inputs[0], ETriggerEvent::Triggered, this, &AMyPlayer::MoveInput);
+		enhancedInputComponent->BindAction(inputs[1], ETriggerEvent::Triggered, this, &AMyPlayer::MouseInput);
+		FunctionComp->SetupPlayerInputComponent(enhancedInputComponent, inputs);
+		// 인풋 배열 매핑 정보
+		// inputs[0] : IA_MoveInput
+		// inputs[1] : IA_MouseInput
+
+		
 	}
 	//입력 매핑 설정하기 (암기)
 
