@@ -38,6 +38,25 @@ void UPlayerFunction::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 void UPlayerFunction::SetupPlayerInputComponent( UEnhancedInputComponent* EnhancedInputComponent, TArray <UInputAction*> inputs)
 {
 
+	EnhancedInputComponent->BindAction(inputs[2],ETriggerEvent::Triggered, this, &UPlayerFunction::Grabbed);
+	EnhancedInputComponent->BindAction(inputs[2], ETriggerEvent::Completed, this, &UPlayerFunction::Dettached);
+
+	// 인풋 배열 매핑 정보
+		// inputs[2] : IA_MouseInputClick_Bool_GDH
+
+
+}
+
+void UPlayerFunction::Grabbed()
+{
+
+	UE_LOG(LogTemp, Warning, TEXT("Grabbed!!"));
+}
+
+void UPlayerFunction::Dettached()
+{
+
+	UE_LOG(LogTemp, Warning, TEXT("Dettached!!"));
 }
 
 //기능 분할법

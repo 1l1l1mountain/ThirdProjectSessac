@@ -27,4 +27,5 @@ public:
 	class UStaticMeshComponent* MeshComp;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "MySetting|Components")
 	class UBoxComponent * BoxComp; 
+
 };
