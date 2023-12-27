@@ -21,7 +21,7 @@ AWeapon::AWeapon()
 	{
 		MeshComp->SetStaticMesh(tempMesh.Object);
 		MeshComp->SetRelativeScale3D(FVector(1,  0.2,0.2));
-		//(X = 1.000000, Y = 0.200000, Z = 0.200000)
+		//콜리전 처리는 다 블루 프린트로 진행할 예정
 	}
 
 }
