@@ -61,7 +61,7 @@ void UPlayerFunction::Grabbed()
 	//감지된 것이 있을때
 	if(world->OverlapMultiByProfile(hitInfos,StartLoc,StartDir,FName("PlayerWeapon"),FCollisionShape::MakeSphere(25.0f)))
 	{
-	UE_LOG(LogTemp, Warning, TEXT("Exec!!")); 
+	//UE_LOG(LogTemp, Warning, TEXT("Exec!!")); 
 	
 	float MinDistance = 25.0f;
 	int32 idx = 0;
@@ -99,7 +99,7 @@ void UPlayerFunction::Grabbed()
 	
 	}
 
-	DrawDebugSphere(world,StartLoc, 25.0f,30, FColor::Green ,false, 3, 0 ,1 );//세그먼트 파라미터는 뭐지?
+	//DrawDebugSphere(world,StartLoc, 25.0f,30, FColor::Green ,false, 3, 0 ,1 );//세그먼트 파라미터는 뭐지?
 	
 }
 

@@ -31,5 +31,5 @@ public:
 	void Grabbed(class USkeletalMeshComponent* SkeletalComp, EAttachmentRule AttachmentRules); //어태치먼트룰은 선언이 필요 없나봄
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySetting|Values")
-	FVector LocationOffset = FVector(0,0,10);
+	FVector LocationOffset = FVector(50,0,0);
 };
