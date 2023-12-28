@@ -119,3 +119,16 @@ void UEnemyFunction::SetState(EEnemyState next)
 {
 	State = next;
 }
+
+void UEnemyFunction::WakeUp()
+{
+
+	FVector Loc = Enemy->GetMesh()->GetComponentLocation();
+	float i = 0;
+	while (i!=1) 
+	{
+	
+//		Loc = FMath::Lerp(Loc ,  , i );
+		i += 0.05;
+	}
+}

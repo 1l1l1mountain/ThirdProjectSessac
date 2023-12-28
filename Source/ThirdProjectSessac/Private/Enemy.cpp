@@ -5,6 +5,7 @@
 #include "EnemyFunction.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Components/TextRenderComponent.h"
+#include "Components/CapsuleComponent.h"
 // Sets default values
 AEnemy::AEnemy()
 {
@@ -36,7 +37,7 @@ AEnemy::AEnemy()
 void AEnemy::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &AEnemy::OnCapsuleComponentBeginOverlap);
 }
 
 // Called every frame
@@ -53,3 +54,15 @@ void AEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
+//void AEnemy::TickAttack(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+//{
+//	auto temp = Cast<AActor*>(OtherActor);
+//	if (temp == nullptr)
+//	{
+//		return;
+//	}
+//}
+//
+void AEnemy::OnCapsuleComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+}
