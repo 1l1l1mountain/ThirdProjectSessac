@@ -6,6 +6,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Components/TextRenderComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Weapon.h"
 // Sets default values
 AEnemy::AEnemy()
 {
@@ -53,16 +54,16 @@ void AEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 }
-
-//void AEnemy::TickAttack(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
-//{
-//	auto temp = Cast<AActor*>(OtherActor);
-//	if (temp == nullptr)
-//	{
-//		return;
-//	}
-//}
-//
+//이벤트 함수 이거는 어떻게 액터 컴포넌트로 보낼까?
 void AEnemy::OnCapsuleComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	auto temp = Cast<AActor>(OtherActor);
+		if (temp == nullptr)
+		{
+			return;
+		}
+		if (AWeapon* Weapon = Cast<AWeapon>(temp))
+		{
+			FunctionComp->SetState(EEnemyState::Damage);
+		}
 }
