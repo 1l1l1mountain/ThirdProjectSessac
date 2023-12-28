@@ -3,6 +3,8 @@
 
 #include "Weapon.h"
 #include "Components/BoxComponent.h"
+#include "Enemy.h"
+#include "EnemyFunction.h"
 // Sets default values
 AWeapon::AWeapon()
 {
@@ -63,5 +65,18 @@ void AWeapon::Grabbed(USkeletalMeshComponent* SkeletalComp, EAttachmentRule Atta
 		SetActorRelativeRotation(RotationOffset);
 		SetActorRelativeScale3D(ScaleOffset);
 	}
+	//에너미 깨우기
+# 
+
+	//UE_LOG(LogTemp, Warning, TEXT("%d"),Enemies.Num());
+	for (int32 i = 0;i < Enemies.Num();i++)
+	{
+
+		Enemies[i]->FunctionComp->SetState(EEnemyState::Move);
+
+
+	}
+	
 }
+
 
