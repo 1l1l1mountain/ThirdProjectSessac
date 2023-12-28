@@ -30,12 +30,13 @@ public:
 
 	void Grabbed(class USkeletalMeshComponent* SkeletalComp, EAttachmentRule AttachmentRules); //어태치먼트룰은 선언이 필요 없나봄
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySetting|Values")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettingValues")
 	FVector LocationOffset = FVector(-1.361386, 0.880213, 14.785830);
 	FRotator RotationOffset = FRotator(90,  85,  81);
 	FVector ScaleOffset= FVector(0.3);
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySetting|Values")
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettingValues")
 	TArray<class AEnemy*> Enemies;
+
 
 };

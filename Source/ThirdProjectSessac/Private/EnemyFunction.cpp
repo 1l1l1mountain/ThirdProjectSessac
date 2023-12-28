@@ -122,13 +122,19 @@ void UEnemyFunction::SetState(EEnemyState next)
 
 void UEnemyFunction::WakeUp()
 {
-
-	FVector Loc = Enemy->GetMesh()->GetComponentLocation();
+	
+	FVector Loc = Enemy->GetMesh()->GetRelativeLocation();
 	float i = 0;
-	while (i!=1) 
+	float OriginZ = Loc.Z;
+	float NewZ;
+	//i가 딱 1로 떨어지지 않음... 이유는?
+	while (i<1) 
 	{
 	
-//		Loc = FMath::Lerp(Loc ,  , i );
+		NewZ = FMath::Lerp(OriginZ , OriginZ + 90 , i );
 		i += 0.05;
+		Loc.Z = NewZ;
+		Enemy->GetMesh()->SetRelativeLocation(Loc);
 	}
+
 }
