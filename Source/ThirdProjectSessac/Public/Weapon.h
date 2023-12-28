@@ -35,4 +35,7 @@ public:
 	FRotator RotationOffset = FRotator(90,  85,  81);
 	FVector ScaleOffset= FVector(0.3);
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySetting|Values")
+	TArray<class AEnemy*> Enemies;
+
 };

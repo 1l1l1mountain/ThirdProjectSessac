@@ -44,6 +44,11 @@ public:
 	UPROPERTY()
 	class AMyPlayer* Player;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings")
+	class AAIController* Ai;
+
+
+
 	void TickIdle();
 	void TickMove();
 	void TickAttack();
@@ -51,7 +56,11 @@ public:
 	void TickDie();
 	void SetState(EEnemyState next); // 클래스 안에서 함수의 매개변수와, 멤버변수이름이 같으면 안되나 봄.
 	
-	
+	float Distance;
+
+	void WakeUp();
+
+
 	
 	//플레이어에게 데미지 주는 함수 추가하기
 
