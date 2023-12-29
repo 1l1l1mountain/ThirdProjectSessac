@@ -131,7 +131,7 @@ void UEnemyFunction::WakeUp()
 	while (i<1) 
 	{
 	
-		NewZ = FMath::Lerp(OriginZ , OriginZ + 90 , i );
+		NewZ = FMath::Lerp(OriginZ , OriginZ + 40 , i );
 		i += 0.05;
 		Loc.Z = NewZ;
 		Enemy->GetMesh()->SetRelativeLocation(Loc);
