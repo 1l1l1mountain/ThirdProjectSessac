@@ -61,7 +61,16 @@ public:
 	void WakeUp();
 
 
-	
-	//플레이어에게 데미지 주는 함수 추가하기
+	void WaitPlayer();
+	void ReactPlayer();
+	void ChasePlayer();
+	void AttackPlayer();
+	void DiedSlowly();
+	void DecreaseHp();
+	void PauseMove();
+	void Fire();
+	void BePused();
+	void BeScaring();
+	void Jump();
 
 };
