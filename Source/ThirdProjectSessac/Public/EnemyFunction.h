@@ -14,6 +14,8 @@ enum class EEnemyState : uint8
 	Attack UMETA(DisplayName = "ATTACK"),
 	Damage UMETA(DisplayName = "DAMAGE"),
 	Die UMETA(DisplayName = "DIE"),
+	Jump UMETA(DisplayName = "JUMP"),
+
 
 
 };
@@ -71,6 +73,11 @@ public:
 	void Fire();
 	void BePused();
 	void BeScaring();
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings")
+	class UEnemyAnimInstance* EnemyAnim;
 	void Jump();
+
 
 };

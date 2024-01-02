@@ -7,6 +7,7 @@
 #include "MyPlayer.h"
 #include "AIController.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "EnemyAnimInstance.h"
 
 // Sets default values for this component's properties
 UEnemyFunction::UEnemyFunction()
@@ -24,12 +25,16 @@ void UEnemyFunction::BeginPlay()
 {
 	Super::BeginPlay();
 
+
 	//처음은 아이들 상태
-	SetState(EEnemyState::Idle);
-	Enemy = GetOwner<AEnemy>();
+	Enemy = Cast<AEnemy>(GetOwner());
 	Player = Cast<AMyPlayer>(GetWorld()->GetFirstPlayerController()->GetPawn());
 	Ai = Cast <AAIController>(Enemy->GetController());
 	Enemy->GetCharacterMovement()->MaxWalkSpeed = 400.0f;
+	
+	EnemyAnim = Cast<UEnemyAnimInstance>(Enemy->GetMesh()->GetAnimInstance());
+	
+	SetState(EEnemyState::Idle);
 }
 
 
@@ -46,7 +51,7 @@ void UEnemyFunction::TickComponent(float DeltaTime, ELevelTick TickType, FActorC
 	case EEnemyState::Attack:TickAttack(); break;
 	case EEnemyState::Damage:TickDamage(); break;
 	case EEnemyState::Die:	TickDie();	break;
-
+	case EEnemyState::Jump: Jump(); break;
 
 	}
 
@@ -118,6 +123,8 @@ void UEnemyFunction::TickDie()
 void UEnemyFunction::SetState(EEnemyState next)
 {
 	State = next;
+	EnemyAnim->State = next; 
+	
 }
 
 void UEnemyFunction::WakeUp()
@@ -137,4 +144,9 @@ void UEnemyFunction::WakeUp()
 		Enemy->GetMesh()->SetRelativeLocation(Loc);
 	}
 
+}
+
+void UEnemyFunction::Jump()
+{
+	Enemy->Jump();
 }

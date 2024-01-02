@@ -7,6 +7,7 @@
 #include "Components/TextRenderComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Weapon.h"
+#include "EnemyAnimInstance.h"
 // Sets default values
 AEnemy::AEnemy()
 {
@@ -14,7 +15,7 @@ AEnemy::AEnemy()
 	PrimaryActorTick.bCanEverTick = true;
 
 	//임시 큐브 스켈레탈 메쉬
-	ConstructorHelpers::FObjectFinder<USkeletalMesh> tempMesh(TEXT("/Script/Engine.SkeletalMesh'/Engine/EngineMeshes/SkeletalCube.SkeletalCube'"));
+	ConstructorHelpers::FObjectFinder<USkeletalMesh> tempMesh(TEXT("/Script/Engine.SkeletalMesh'/Game/StylizedMummy/Meshs/Mummy_Base.Mummy_Base'"));
 	if (tempMesh.Succeeded())
 	{
 
@@ -29,6 +30,13 @@ AEnemy::AEnemy()
 	
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 
+	//애니메이션 블프 로드
+	ConstructorHelpers::FClassFinder<UEnemyAnimInstance> tempAnim(TEXT("/Script/Engine.AnimBlueprint'/Game/A_GDH/ABP/ABP_Enemy_GDH.ABP_Enemy_GDH_C'"));
+	if (tempAnim.Succeeded())
+	{ 
+		GetMesh()->SetAnimClass(tempAnim.Class);
+		 
+	} 
 
 	//액터 컴포넌트
 	FunctionComp = CreateDefaultSubobject<UEnemyFunction>(TEXT("FunctionComp"));
