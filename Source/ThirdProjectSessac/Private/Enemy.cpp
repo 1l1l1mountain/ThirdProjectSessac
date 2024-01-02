@@ -8,13 +8,14 @@
 #include "Components/CapsuleComponent.h"
 #include "Weapon.h"
 #include "EnemyAnimInstance.h"
+#include "Components/SphereComponent.h"
 // Sets default values
 AEnemy::AEnemy()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	//임시 큐브 스켈레탈 메쉬
+
 	ConstructorHelpers::FObjectFinder<USkeletalMesh> tempMesh(TEXT("/Script/Engine.SkeletalMesh'/Game/StylizedMummy/Meshs/Mummy_Base.Mummy_Base'"));
 	if (tempMesh.Succeeded())
 	{
@@ -37,6 +38,13 @@ AEnemy::AEnemy()
 		GetMesh()->SetAnimClass(tempAnim.Class);
 		 
 	} 
+
+	// 충돌 컴포넌트 추가 , 각 메쉬 손 소켓 아래에 부착
+	RightHandCollision = CreateDefaultSubobject<USphereComponent>(TEXT("RightHandCollision"));
+	RightHandCollision->SetupAttachment(GetMesh(),TEXT("RightHandSocket"));
+	LeftHandCollision = CreateDefaultSubobject<USphereComponent>(TEXT("LeftHandCollision"));
+	LeftHandCollision->SetupAttachment(GetMesh(), TEXT("LeftHandSocket"));
+
 
 	//액터 컴포넌트
 	FunctionComp = CreateDefaultSubobject<UEnemyFunction>(TEXT("FunctionComp"));

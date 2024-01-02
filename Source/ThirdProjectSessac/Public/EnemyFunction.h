@@ -79,5 +79,8 @@ public:
 	class UEnemyAnimInstance* EnemyAnim;
 	void Jump();
 
+	void EnableHandCollision();
+	void DisableHandCollision();
 
+	
 };

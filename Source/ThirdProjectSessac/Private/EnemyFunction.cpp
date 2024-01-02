@@ -8,6 +8,7 @@
 #include "AIController.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "EnemyAnimInstance.h"
+#include "Components/SphereComponent.h"
 
 // Sets default values for this component's properties
 UEnemyFunction::UEnemyFunction()
@@ -80,7 +81,7 @@ void UEnemyFunction::TickMove()
 {	
 	Enemy->TextComp->SetText(FText::FromString(FString("Move!!")));
 	Enemy->TextComp->SetTextRenderColor(FColor(0, 71, 255, 255));
-	
+
 	Ai->MoveToLocation(Player->GetActorLocation());
 
 	Distance = FVector::Distance(Player->GetActorLocation(), Enemy->GetActorLocation());
@@ -149,4 +150,20 @@ void UEnemyFunction::WakeUp()
 void UEnemyFunction::Jump()
 {
 	Enemy->Jump();
+}
+
+void UEnemyFunction::EnableHandCollision()
+{
+	Enemy->RightHandCollision->SetCollisionProfileName("Enemy");
+	Enemy->LeftHandCollision->SetCollisionProfileName("Enemy");
+	UE_LOG(LogTemp, Warning, TEXT("EnableHandCollision"));
+
+}
+
+void UEnemyFunction::DisableHandCollision()
+{
+	Enemy->RightHandCollision->SetCollisionProfileName("NoCollision");
+	Enemy->LeftHandCollision->SetCollisionProfileName("NoCollision");
+	UE_LOG(LogTemp, Warning, TEXT("DisableHandCollision"));
+
 }
