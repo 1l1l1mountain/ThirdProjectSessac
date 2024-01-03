@@ -92,6 +92,11 @@ void UEnemyFunction::TickMove()
 
 		SetState(EEnemyState::Attack);
 	}
+
+	//앞에 장애물이 있으면 점프를 한다.
+	//라인트레이싱을 한다.
+	//앞에 플레이 제외한 장애물을 인식한다.
+	//점프 상태로 바꾼다.
 	
 }
 

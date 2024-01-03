@@ -32,4 +32,9 @@ public:
 	
 	UFUNCTION()
 	void AnimNotify_AttackEnd();
+	UFUNCTION()
+	void AnimNotify_JumpEnd();
+	
+	
+	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 }; 
