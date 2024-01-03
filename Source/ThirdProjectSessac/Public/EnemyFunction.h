@@ -79,8 +79,8 @@ public:
 	class UEnemyAnimInstance* EnemyAnim;
 	void Jump();
 
-	void EnableHandCollision();
-	void DisableHandCollision();
 
-	
+	//Hit¿Ã∫•∆Æ
+	UFUNCTION()
+	void OnAttackHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 };

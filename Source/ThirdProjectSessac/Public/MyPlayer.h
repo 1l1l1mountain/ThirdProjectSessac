@@ -58,4 +58,9 @@ public:
 	void MoveInput(const FInputActionValue & value);
 	void MouseInput(const FInputActionValue & value);
 
+
+
+	//성욱이 형 함수
+	UFUNCTION(BlueprintImplementableEvent, Category = "WidgetFunction")
+	void DisplayWidgetRandom();
 };

@@ -55,6 +55,8 @@ void UEnemyFunction::TickComponent(float DeltaTime, ELevelTick TickType, FActorC
 
 	}
 
+	Enemy->RightHandCollision->OnComponentHit.AddDynamic(this,&UEnemyFunction::OnAttackHit);
+	Enemy->LeftHandCollision->OnComponentHit.AddDynamic(this, &UEnemyFunction::OnAttackHit);
 
 }
 
@@ -156,18 +158,15 @@ void UEnemyFunction::Jump()
 	Enemy->Jump();
 }
 
-void UEnemyFunction::EnableHandCollision()
+void UEnemyFunction::OnAttackHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
-	Enemy->RightHandCollision->SetCollisionProfileName("Enemy");
-	Enemy->LeftHandCollision->SetCollisionProfileName("Enemy");
-	UE_LOG(LogTemp, Warning, TEXT("EnableHandCollision"));
+	//근데 왜 무한 틱처럼 발동되지?
+	//충돌이 플레이어라면?
+	if (Cast<AMyPlayer>(OtherActor))
+	{
+		//성욱이 형의 위젯을 뛰운다
+		UE_LOG(LogTemp, Warning,TEXT("%s"), *OtherActor->GetActorNameOrLabel());
+		Player->DisplayWidgetRandom();
 
-}
-
-void UEnemyFunction::DisableHandCollision()
-{
-	Enemy->RightHandCollision->SetCollisionProfileName("NoCollision");
-	Enemy->LeftHandCollision->SetCollisionProfileName("NoCollision");
-	UE_LOG(LogTemp, Warning, TEXT("DisableHandCollision"));
-
+	}
 }
