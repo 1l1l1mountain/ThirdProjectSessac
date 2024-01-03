@@ -34,7 +34,6 @@ void UEnemyFunction::BeginPlay()
 	Enemy->GetCharacterMovement()->MaxWalkSpeed = 400.0f;
 	
 	EnemyAnim = Cast<UEnemyAnimInstance>(Enemy->GetMesh()->GetAnimInstance());
-	
 	SetState(EEnemyState::Idle);
 }
 
@@ -124,7 +123,12 @@ void UEnemyFunction::TickDie()
 void UEnemyFunction::SetState(EEnemyState next)
 {
 	State = next;
-	EnemyAnim->State = next; 
+	if (EnemyAnim != nullptr)
+	{
+
+		EnemyAnim->State = next; 
+
+	}
 	
 }
 
