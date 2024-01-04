@@ -79,5 +79,8 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void ClickWidget();
 	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "MySettings|Components")
+	class UWidgetPointerComponent* widgetPointerComp;
+	
 
 };

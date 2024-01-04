@@ -9,7 +9,8 @@
 #include "PlayerFunction.h"
 #include "MotionControllerComponent.h"
 #include "HeadMountedDisplayFunctionLibrary.h"
-
+#include "Components/WidgetInteractionComponent.h"
+#include "WidgetPointerComponent.h"
 //?? 헤더에 추가하면 따로 추가하지 않아도 되는건가 ??
 //#include "InputActionValue.h" 
 
@@ -63,9 +64,13 @@ AMyPlayer::AMyPlayer()
 		
 	}
 
+	rightPointer = CreateDefaultSubobject<UWidgetInteractionComponent>(TEXT("Right Widget Pointer"));
+	rightPointer->SetupAttachment(RightHand);
 
 	//액터 컴포넌트 가지고 있기
 	FunctionComp = CreateDefaultSubobject<UPlayerFunction>(TEXT("FunctionComp"));
+	widgetPointerComp = CreateDefaultSubobject<UWidgetPointerComponent>(TEXT("Widget Pointer Component"));
+
 
 }
 
@@ -123,9 +128,11 @@ void AMyPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 		// inputs[0] : IA_MoveInput
 		// inputs[1] : IA_MouseInput
 
+		widgetPointerComp->SetupPlayerInputComponent(enhancedInputComponent, inputs);
 		
 	}
 	//입력 매핑 설정하기 (암기)
+
 
 }
 
