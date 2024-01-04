@@ -82,7 +82,7 @@ void UEnemyFunction::TickIdle()
 	
 void UEnemyFunction::TickMove()
 {	
-	FHitResult Outhit;
+	
 	FVector StartLoc = Enemy->GetActorLocation();
 	FVector dir = Enemy->GetActorForwardVector();
 	FVector EndLoc = StartLoc + dir * 100;
@@ -193,7 +193,18 @@ void UEnemyFunction::WakeUp()
 
 void UEnemyFunction::Jump()
 {
-	Enemy->Jump();
+	if (Cast<AMyPlayer>(Outhit.GetActor())== nullptr   ) 
+	{
+		/*	AActor* Temp;
+			if (AObstacle* Obstacle = Cast<AObstacle>(Temp))
+			{
+				Obstacle->GetActorScale();
+			}
+			*/
+
+		Enemy->Jump();
+
+	}
 }
 // 두대씩 때리는 문제 ㅋㅋ
 void UEnemyFunction::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
