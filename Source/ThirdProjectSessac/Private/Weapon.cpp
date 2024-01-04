@@ -18,7 +18,7 @@ AWeapon::AWeapon()
 	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Weapon"));
 	MeshComp->SetupAttachment(RootComponent);
 
-	ConstructorHelpers::FObjectFinder<UStaticMesh> tempMesh(TEXT("/Script/Engine.StaticMesh'/Game/StarterContent/Architecture/Pillar_50x500.Pillar_50x500'"));
+	ConstructorHelpers::FObjectFinder<UStaticMesh> tempMesh(TEXT("/Script/Engine.StaticMesh'/Game/A_YSW/Prop/Sword/sword.sword'"));
 	if (tempMesh.Succeeded())
 	{
 		MeshComp->SetStaticMesh(tempMesh.Object);
