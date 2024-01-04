@@ -114,7 +114,10 @@ void AMyPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	{
 		//함수 이벤트화
 		enhancedInputComponent->BindAction(inputs[0], ETriggerEvent::Triggered, this, &AMyPlayer::MoveInput);
+		enhancedInputComponent->BindAction(inputs[5], ETriggerEvent::Triggered, this, &AMyPlayer::MoveInput);
 		enhancedInputComponent->BindAction(inputs[1], ETriggerEvent::Triggered, this, &AMyPlayer::MouseInput);
+		enhancedInputComponent->BindAction(inputs[3], ETriggerEvent::Triggered, this, &AMyPlayer::ClickWidget);
+
 		FunctionComp->SetupPlayerInputComponent(enhancedInputComponent, inputs);
 		// 인풋 배열 매핑 정보
 		// inputs[0] : IA_MoveInput

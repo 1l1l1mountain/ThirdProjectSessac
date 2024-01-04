@@ -38,5 +38,9 @@ public:
 	class AWeapon* CurrentWeapon;
 
 
+	//vr ¿¬µ¿
+	void Jump();
+
+
 
 };

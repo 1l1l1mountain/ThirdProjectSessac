@@ -41,6 +41,7 @@ void UPlayerFunction::SetupPlayerInputComponent( UEnhancedInputComponent* Enhanc
 
 	EnhancedInputComponent->BindAction(inputs[2],ETriggerEvent::Triggered, this, &UPlayerFunction::Grabbed);
 	EnhancedInputComponent->BindAction(inputs[2], ETriggerEvent::Completed, this, &UPlayerFunction::Dettached);
+	EnhancedInputComponent->BindAction(inputs[4], ETriggerEvent::Triggered, this, &UPlayerFunction::Jump);
 
 	// 인풋 배열 매핑 정보
 		// inputs[2] : IA_MouseInputClick_Bool_GDH
@@ -110,6 +111,13 @@ void UPlayerFunction::Dettached()
 {
 
 	UE_LOG(LogTemp, Warning, TEXT("Dettached!!"));//추상화
+}
+
+
+void UPlayerFunction::Jump()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Jump!!"));//추상화
+
 }
 
 //기능 분할법

@@ -76,5 +76,8 @@ public:
 	class UWidgetInteractionComponent* rightPointer;
 
 
+	UFUNCTION(BlueprintImplementableEvent)
+	void ClickWidget();
+	
 
 };
