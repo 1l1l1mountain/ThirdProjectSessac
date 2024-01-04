@@ -39,9 +39,10 @@ void UPlayerFunction::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 void UPlayerFunction::SetupPlayerInputComponent( UEnhancedInputComponent* EnhancedInputComponent, TArray <UInputAction*> inputs)
 {
 
-	EnhancedInputComponent->BindAction(inputs[2],ETriggerEvent::Triggered, this, &UPlayerFunction::Grabbed);
-	EnhancedInputComponent->BindAction(inputs[2], ETriggerEvent::Completed, this, &UPlayerFunction::Dettached);
-	EnhancedInputComponent->BindAction(inputs[4], ETriggerEvent::Triggered, this, &UPlayerFunction::Jump);
+	//EnhancedInputComponent->BindAction(inputs[2],ETriggerEvent::Triggered, this, &UPlayerFunction::Grabbed);
+	EnhancedInputComponent->BindAction(inputs[4],ETriggerEvent::Triggered, this, &UPlayerFunction::Grabbed);
+	EnhancedInputComponent->BindAction(inputs[4], ETriggerEvent::Completed, this, &UPlayerFunction::Dettached);
+	EnhancedInputComponent->BindAction(inputs[6], ETriggerEvent::Triggered, this, &UPlayerFunction::Jump);
 
 	// 인풋 배열 매핑 정보
 		// inputs[2] : IA_MouseInputClick_Bool_GDH
@@ -85,7 +86,7 @@ void UPlayerFunction::Grabbed()
 
 	}
 	FText::FromString(hitInfos[idx].GetActor()->GetActorNameOrLabel());
-	UE_LOG(LogTemp,Warning, TEXT("%s"), *hitInfos[idx].GetActor()->GetActorNameOrLabel());
+	//UE_LOG(LogTemp,Warning, TEXT("%s"), *hitInfos[idx].GetActor()->GetActorNameOrLabel());
 
 	CurrentWeapon = Cast<AWeapon>(hitInfos[idx].GetActor());
 	if (CurrentWeapon != nullptr)
@@ -93,7 +94,7 @@ void UPlayerFunction::Grabbed()
 		//UE_LOG(LogTemp, Warning, TEXT("Exec!!")); 
 
 		CurrentWeapon->Grabbed(Player->RightHand,EAttachmentRule::SnapToTarget); //그랩함수 구현 완료
-		UE_LOG(LogTemp, Warning, TEXT("Grabbed!!")); //추상화
+		//UE_LOG(LogTemp, Warning, TEXT("Grabbed!!")); //추상화
 	
 	
 	}
@@ -103,7 +104,7 @@ void UPlayerFunction::Grabbed()
 	
 	}
 
-	DrawDebugSphere(world,StartLoc, 25.0f,30, FColor::Green ,false, 3, 0 ,1 );//세그먼트 파라미터는 뭐지?
+	//DrawDebugSphere(world,StartLoc, 25.0f,30, FColor::Green ,false, 3, 0 ,1 );//세그먼트 파라미터는 뭐지?
 	
 }
 
@@ -116,8 +117,8 @@ void UPlayerFunction::Dettached()
 
 void UPlayerFunction::Jump()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Jump!!"));//추상화
-
+	//UE_LOG(LogTemp, Warning, TEXT("Jump!!"));//추상화
+	Player->Jump();
 }
 
 //기능 분할법
