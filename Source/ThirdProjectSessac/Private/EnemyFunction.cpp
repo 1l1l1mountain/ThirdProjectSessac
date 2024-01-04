@@ -84,6 +84,7 @@ void UEnemyFunction::TickMove()
 {	
 	
 	FVector StartLoc = Enemy->GetActorLocation();
+	StartLoc.Z = StartLoc.Z - 80;
 	FVector dir = Enemy->GetActorForwardVector();
 	FVector EndLoc = StartLoc + dir * 100;
 	
