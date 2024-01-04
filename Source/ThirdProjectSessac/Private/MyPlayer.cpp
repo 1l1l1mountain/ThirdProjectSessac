@@ -113,7 +113,7 @@ void AMyPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	if (enhancedInputComponent != nullptr)
 	{
 		//함수 이벤트화
-		//enhancedInputComponent->BindAction(inputs[0], ETriggerEvent::Triggered, this, &AMyPlayer::MoveInput);
+		enhancedInputComponent->BindAction(inputs[0], ETriggerEvent::Triggered, this, &AMyPlayer::MoveInput);
 		enhancedInputComponent->BindAction(inputs[5], ETriggerEvent::Triggered, this, &AMyPlayer::MoveInput);
 		enhancedInputComponent->BindAction(inputs[1], ETriggerEvent::Triggered, this, &AMyPlayer::MouseInput);
 		enhancedInputComponent->BindAction(inputs[3], ETriggerEvent::Triggered, this, &AMyPlayer::ClickWidget);
@@ -133,7 +133,7 @@ void AMyPlayer::MoveInput(const FInputActionValue& value)
 {
 	//입력 저장 inputvalue.x or .y
 	FVector2D InputValue = value.Get<FVector2D>();
-	UE_LOG(LogTemp, Warning, TEXT("x: %.1f, y: %.1f"), InputValue.X, InputValue.Y);
+	//UE_LOG(LogTemp, Warning, TEXT("x: %.1f, y: %.1f"), InputValue.X, InputValue.Y);
 	// 이동 공식 암기
 	FVector inputDir = FVector(InputValue.X, InputValue.Y , 0);
 	inputDir.Normalize();
