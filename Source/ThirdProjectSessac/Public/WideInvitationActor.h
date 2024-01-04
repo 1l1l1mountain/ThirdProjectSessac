@@ -23,13 +23,13 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	UPROPERTY(EditAnywhere, Category = "Mysettings");
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mysettings");
 	class USceneComponent* rootComp;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mysettings");
 	class UWidgetComponent* invitationWidget;
 
-	UPROPERTY(EditAnywhere, Category = "Mysettings");
+	UPROPERTY(EditAnywhere, BlueprintReadWrite,  Category = "Mysettings");
 	class UWidget* paper;
 
 	void YES();
