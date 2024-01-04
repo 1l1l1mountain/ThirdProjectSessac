@@ -80,6 +80,7 @@ void AEnemy::OnCapsuleComponentBeginOverlap(UPrimitiveComponent* OverlappedCompo
 		}
 		if (AWeapon* Weapon = Cast<AWeapon>(temp))
 		{
-			FunctionComp->SetState(EEnemyState::Damage);
+			//FunctionComp->SetState(EEnemyState::Damage);
+			FunctionComp->OnTakeDamage();
 		}
 }

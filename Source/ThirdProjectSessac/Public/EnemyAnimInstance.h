@@ -37,4 +37,11 @@ public:
 	
 	
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
+
+	UFUNCTION()
+	void AnimNotify_Damage();
+	
+	UFUNCTION()
+	void AnimNotify_Die();
+
 }; 
