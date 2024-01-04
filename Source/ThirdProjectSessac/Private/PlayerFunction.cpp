@@ -83,13 +83,14 @@ void UPlayerFunction::Grabbed()
 		}
 
 	}
-	//FText::FromString(hitInfos[idx].GetActor()->GetActorNameOrLabel());
-	//UE_LOG(LogTemp,Warning, TEXT("%s"), *hitInfos[idx].GetActor()->GetActorNameOrLabel());
+	FText::FromString(hitInfos[idx].GetActor()->GetActorNameOrLabel());
+	UE_LOG(LogTemp,Warning, TEXT("%s"), *hitInfos[idx].GetActor()->GetActorNameOrLabel());
 
 	CurrentWeapon = Cast<AWeapon>(hitInfos[idx].GetActor());
 	if (CurrentWeapon != nullptr)
 	{
-		
+		//UE_LOG(LogTemp, Warning, TEXT("Exec!!")); 
+
 		CurrentWeapon->Grabbed(Player->RightHand,EAttachmentRule::SnapToTarget); //그랩함수 구현 완료
 		UE_LOG(LogTemp, Warning, TEXT("Grabbed!!")); //추상화
 	
@@ -101,7 +102,7 @@ void UPlayerFunction::Grabbed()
 	
 	}
 
-	//DrawDebugSphere(world,StartLoc, 25.0f,30, FColor::Green ,false, 3, 0 ,1 );//세그먼트 파라미터는 뭐지?
+	DrawDebugSphere(world,StartLoc, 25.0f,30, FColor::Green ,false, 3, 0 ,1 );//세그먼트 파라미터는 뭐지?
 	
 }
 

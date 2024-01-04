@@ -8,7 +8,7 @@ public class ThirdProjectSessac : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput" , "AIModule" });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput" , "AIModule", "UMG", "HeadMountedDisplay", "XRBase", "Niagara", "MediaAssets" });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 

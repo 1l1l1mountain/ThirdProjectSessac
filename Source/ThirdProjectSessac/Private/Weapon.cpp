@@ -79,7 +79,7 @@ void AWeapon::Grabbed(USkeletalMeshComponent* SkeletalComp, EAttachmentRule Atta
 		{
 			
 			Enemies[i]->FunctionComp->SetState(EEnemyState::Move);
-			Enemies[i]->FunctionComp->WakeUp();
+			//Enemies[i]->FunctionComp->WakeUp();
 
 		}
 	}
