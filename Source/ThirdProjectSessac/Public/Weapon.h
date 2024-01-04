@@ -38,5 +38,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettingValues")
 	TArray<class AEnemy*> Enemies;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettingValues")
+	bool bIsGrab;
 
 };

@@ -45,7 +45,7 @@ void AWeapon::Tick(float DeltaTime)
 void AWeapon::Grabbed(USkeletalMeshComponent* SkeletalComp, EAttachmentRule AttachmentRules)
 {
 	BoxComp->SetSimulatePhysics(false);
-
+	bIsGrab = true;
 
 	if (AttachmentRules == EAttachmentRule::KeepWorld)
 	{
