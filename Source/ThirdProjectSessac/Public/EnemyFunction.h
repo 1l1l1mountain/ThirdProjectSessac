@@ -14,6 +14,8 @@ enum class EEnemyState : uint8
 	Attack UMETA(DisplayName = "ATTACK"),
 	Damage UMETA(DisplayName = "DAMAGE"),
 	Die UMETA(DisplayName = "DIE"),
+	Jump UMETA(DisplayName = "JUMP"),
+
 
 
 };
@@ -61,7 +63,27 @@ public:
 	void WakeUp();
 
 
-	
-	//플레이어에게 데미지 주는 함수 추가하기
+	void WaitPlayer();
+	void ReactPlayer();
+	void ChasePlayer();
+	void AttackPlayer();
+	void DiedSlowly();
+	void DecreaseHp();
+	void PauseMove();
+	void Fire();
+	void BePused();
+	void BeScaring();
 
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings")
+	class UEnemyAnimInstance* EnemyAnim;
+	void Jump();
+
+
+	
+	UFUNCTION()
+	void OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+	float CurrentTime;
+	
 };

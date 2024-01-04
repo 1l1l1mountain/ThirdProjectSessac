@@ -7,6 +7,8 @@
 #include "MyPlayer.h"
 #include "AIController.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "EnemyAnimInstance.h"
+#include "Components/SphereComponent.h"
 
 // Sets default values for this component's properties
 UEnemyFunction::UEnemyFunction()
@@ -24,12 +26,21 @@ void UEnemyFunction::BeginPlay()
 {
 	Super::BeginPlay();
 
+
 	//처음은 아이들 상태
-	SetState(EEnemyState::Idle);
-	Enemy = GetOwner<AEnemy>();
+	Enemy = Cast<AEnemy>(GetOwner());
 	Player = Cast<AMyPlayer>(GetWorld()->GetFirstPlayerController()->GetPawn());
 	Ai = Cast <AAIController>(Enemy->GetController());
 	Enemy->GetCharacterMovement()->MaxWalkSpeed = 400.0f;
+	
+	EnemyAnim = Cast<UEnemyAnimInstance>(Enemy->GetMesh()->GetAnimInstance());
+	SetState(EEnemyState::Idle);
+
+
+	Enemy->RightHandCollision->OnComponentBeginOverlap.AddDynamic(this, &UEnemyFunction::OnComponentBeginOverlap);
+	Enemy->LeftHandCollision->OnComponentBeginOverlap.AddDynamic(this, &UEnemyFunction::OnComponentBeginOverlap);
+
+
 }
 
 
@@ -46,11 +57,9 @@ void UEnemyFunction::TickComponent(float DeltaTime, ELevelTick TickType, FActorC
 	case EEnemyState::Attack:TickAttack(); break;
 	case EEnemyState::Damage:TickDamage(); break;
 	case EEnemyState::Die:	TickDie();	break;
-
+	case EEnemyState::Jump: Jump(); break;
 
 	}
-
-
 }
 
 void UEnemyFunction::TickIdle()
@@ -73,11 +82,30 @@ void UEnemyFunction::TickIdle()
 	
 void UEnemyFunction::TickMove()
 {	
+	FHitResult Outhit;
+	FVector StartLoc = Enemy->GetActorLocation();
+	FVector dir = Enemy->GetActorForwardVector();
+	FVector EndLoc = StartLoc + dir * 100;
+	
+	
 	Enemy->TextComp->SetText(FText::FromString(FString("Move!!")));
 	Enemy->TextComp->SetTextRenderColor(FColor(0, 71, 255, 255));
-	
-	Ai->MoveToLocation(Player->GetActorLocation());
+	CurrentTime += GetWorld()->GetDeltaSeconds();
+	if (CurrentTime < 0.3f)
+	{
+		Ai->MoveToLocation(Player->GetActorLocation());
+	}
+	else
+	{
+		FVector PlayerDir = Player->GetActorLocation() - Enemy->GetActorLocation();
+		PlayerDir.Normalize();
+		//FVector MoveLoc = StartLoc + PlayerDir * 100 * GetWorld()->GetDeltaSeconds();
+		FTransform controllerTransform = FTransform(Enemy->GetControlRotation());
+		FVector RealDir = controllerTransform.TransformVector(PlayerDir);
+		Enemy->AddMovementInput(RealDir);
 
+		if (CurrentTime > 1.0f) CurrentTime = 0;
+	}
 	Distance = FVector::Distance(Player->GetActorLocation(), Enemy->GetActorLocation());
 
 	if (Player && Distance < 200)
@@ -85,7 +113,23 @@ void UEnemyFunction::TickMove()
 
 		SetState(EEnemyState::Attack);
 	}
+
+	//앞에 장애물이 있으면 점프를 한다.
+	//라인트레이싱을 한다.
+	//앞에 플레이 제외한 장애물을 인식한다.
+	//점프 상태로 바꾼다.
 	
+	//DrawDebugLine(GetWorld(), StartLoc, EndLoc, FColor::Emerald, true, -1, 0, 10);
+	if (GetWorld()->LineTraceSingleByChannel(Outhit, StartLoc, EndLoc, ECC_Visibility))
+	{
+# 
+		UE_LOG(LogTemp, Warning, TEXT("LineTrace"));
+		if (!Cast<AMyPlayer>(Outhit.GetActor()))
+		{
+			SetState(EEnemyState::Jump);
+
+		}
+	}
 }
 
 void UEnemyFunction::TickAttack()
@@ -117,7 +161,15 @@ void UEnemyFunction::TickDie()
 
 void UEnemyFunction::SetState(EEnemyState next)
 {
+	CurrentTime = 0;
 	State = next;
+	if (EnemyAnim != nullptr)
+	{
+
+		EnemyAnim->State = next; 
+
+	}
+	
 }
 
 void UEnemyFunction::WakeUp()
@@ -137,4 +189,21 @@ void UEnemyFunction::WakeUp()
 		Enemy->GetMesh()->SetRelativeLocation(Loc);
 	}
 
+}
+
+void UEnemyFunction::Jump()
+{
+	Enemy->Jump();
+}
+// 두대씩 때리는 문제 ㅋㅋ
+void UEnemyFunction::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	//충돌이 플레이어라면?
+	if (Cast<AMyPlayer>(OtherActor))
+	{
+		//성욱이 형의 위젯을 뛰운다
+		UE_LOG(LogTemp, Warning, TEXT("%s"), *OtherActor->GetActorNameOrLabel());
+		Player->DisplayWidgetRandom();
+
+	}
 }

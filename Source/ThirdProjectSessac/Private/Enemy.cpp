@@ -7,14 +7,16 @@
 #include "Components/TextRenderComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Weapon.h"
+#include "EnemyAnimInstance.h"
+#include "Components/SphereComponent.h"
 // Sets default values
 AEnemy::AEnemy()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	//임시 큐브 스켈레탈 메쉬
-	ConstructorHelpers::FObjectFinder<USkeletalMesh> tempMesh(TEXT("/Script/Engine.SkeletalMesh'/Engine/EngineMeshes/SkeletalCube.SkeletalCube'"));
+
+	ConstructorHelpers::FObjectFinder<USkeletalMesh> tempMesh(TEXT("/Script/Engine.SkeletalMesh'/Game/StylizedMummy/Meshs/Mummy_Base.Mummy_Base'"));
 	if (tempMesh.Succeeded())
 	{
 
@@ -28,6 +30,20 @@ AEnemy::AEnemy()
 	TextComp->SetRelativeLocationAndRotation(FVector(-20,0,30),FRotator(0,90,0));
 	
 	GetCharacterMovement()->bOrientRotationToMovement = true;
+
+	//애니메이션 블프 로드
+	ConstructorHelpers::FClassFinder<UEnemyAnimInstance> tempAnim(TEXT("/Script/Engine.AnimBlueprint'/Game/A_GDH/ABP/ABP_Enemy_GDH.ABP_Enemy_GDH_C'"));
+	if (tempAnim.Succeeded())
+	{ 
+		GetMesh()->SetAnimClass(tempAnim.Class);
+		 
+	} 
+
+	// 충돌 컴포넌트 추가 , 각 메쉬 손 소켓 아래에 부착
+	RightHandCollision = CreateDefaultSubobject<USphereComponent>(TEXT("RightHandCollision"));
+	RightHandCollision->SetupAttachment(GetMesh(),TEXT("RightHandSocket"));
+	LeftHandCollision = CreateDefaultSubobject<USphereComponent>(TEXT("LeftHandCollision"));
+	LeftHandCollision->SetupAttachment(GetMesh(), TEXT("LeftHandSocket"));
 
 
 	//액터 컴포넌트
