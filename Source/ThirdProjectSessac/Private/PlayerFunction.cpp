@@ -86,7 +86,7 @@ void UPlayerFunction::Grabbed()
 
 	}
 	FText::FromString(hitInfos[idx].GetActor()->GetActorNameOrLabel());
-	//UE_LOG(LogTemp,Warning, TEXT("%s"), *hitInfos[idx].GetActor()->GetActorNameOrLabel());
+	UE_LOG(LogTemp,Warning, TEXT("%s"), *hitInfos[idx].GetActor()->GetActorNameOrLabel());
 
 	CurrentWeapon = Cast<AWeapon>(hitInfos[idx].GetActor());
 	if (CurrentWeapon != nullptr)
