@@ -80,4 +80,7 @@ public:
 	void Jump();
 
 
+	//Hit¿Ã∫•∆Æ
+	UFUNCTION()
+	void OnAttackHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 };

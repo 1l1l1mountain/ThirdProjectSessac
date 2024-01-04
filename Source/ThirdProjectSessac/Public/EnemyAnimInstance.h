@@ -25,4 +25,11 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	bool bIsFast;
+
+
+	UFUNCTION()
+	void AnimNotify_AttackStart();
+	
+	UFUNCTION()
+	void AnimNotify_AttackEnd();
 }; 

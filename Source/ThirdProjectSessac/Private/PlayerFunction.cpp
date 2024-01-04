@@ -59,7 +59,7 @@ void UPlayerFunction::Grabbed()
 	FVector StartLoc = Player->RightHand->GetComponentLocation();
 	FQuat StartDir = Player->RightHand->GetComponentQuat(); //FQuat가 제대로 무슨 의미 일까? 공부하기
 	//감지된 것이 있을때
-	if(world->OverlapMultiByProfile(hitInfos,StartLoc,StartDir,FName("PlayerWeapon"),FCollisionShape::MakeSphere(25.0f)))
+	if(world->OverlapMultiByChannel(hitInfos,StartLoc,StartDir,ECC_Visibility,FCollisionShape::MakeSphere(25.0f)))
 	{
 	//UE_LOG(LogTemp, Warning, TEXT("Exec!!")); 
 	
@@ -83,7 +83,9 @@ void UPlayerFunction::Grabbed()
 		}
 
 	}
-	
+	//FText::FromString(hitInfos[idx].GetActor()->GetActorNameOrLabel());
+	//UE_LOG(LogTemp,Warning, TEXT("%s"), *hitInfos[idx].GetActor()->GetActorNameOrLabel());
+
 	CurrentWeapon = Cast<AWeapon>(hitInfos[idx].GetActor());
 	if (CurrentWeapon != nullptr)
 	{

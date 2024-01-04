@@ -8,6 +8,7 @@
 #include "AIController.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "EnemyAnimInstance.h"
+#include "Components/SphereComponent.h"
 
 // Sets default values for this component's properties
 UEnemyFunction::UEnemyFunction()
@@ -33,7 +34,6 @@ void UEnemyFunction::BeginPlay()
 	Enemy->GetCharacterMovement()->MaxWalkSpeed = 400.0f;
 	
 	EnemyAnim = Cast<UEnemyAnimInstance>(Enemy->GetMesh()->GetAnimInstance());
-	
 	SetState(EEnemyState::Idle);
 }
 
@@ -55,6 +55,8 @@ void UEnemyFunction::TickComponent(float DeltaTime, ELevelTick TickType, FActorC
 
 	}
 
+	Enemy->RightHandCollision->OnComponentHit.AddDynamic(this,&UEnemyFunction::OnAttackHit);
+	Enemy->LeftHandCollision->OnComponentHit.AddDynamic(this, &UEnemyFunction::OnAttackHit);
 
 }
 
@@ -80,7 +82,7 @@ void UEnemyFunction::TickMove()
 {	
 	Enemy->TextComp->SetText(FText::FromString(FString("Move!!")));
 	Enemy->TextComp->SetTextRenderColor(FColor(0, 71, 255, 255));
-	
+
 	Ai->MoveToLocation(Player->GetActorLocation());
 
 	Distance = FVector::Distance(Player->GetActorLocation(), Enemy->GetActorLocation());
@@ -123,7 +125,12 @@ void UEnemyFunction::TickDie()
 void UEnemyFunction::SetState(EEnemyState next)
 {
 	State = next;
-	EnemyAnim->State = next; 
+	if (EnemyAnim != nullptr)
+	{
+
+		EnemyAnim->State = next; 
+
+	}
 	
 }
 
@@ -149,4 +156,17 @@ void UEnemyFunction::WakeUp()
 void UEnemyFunction::Jump()
 {
 	Enemy->Jump();
+}
+
+void UEnemyFunction::OnAttackHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+{
+	//근데 왜 무한 틱처럼 발동되지?
+	//충돌이 플레이어라면?
+	if (Cast<AMyPlayer>(OtherActor))
+	{
+		//성욱이 형의 위젯을 뛰운다
+		UE_LOG(LogTemp, Warning,TEXT("%s"), *OtherActor->GetActorNameOrLabel());
+		Player->DisplayWidgetRandom();
+
+	}
 }

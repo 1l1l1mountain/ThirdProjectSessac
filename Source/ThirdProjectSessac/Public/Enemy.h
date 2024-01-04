@@ -40,4 +40,10 @@ public:
 
 
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings")
+	class USphereComponent* RightHandCollision;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings")
+	class USphereComponent* LeftHandCollision;
+
 };

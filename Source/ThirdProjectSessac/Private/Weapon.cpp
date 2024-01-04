@@ -68,14 +68,20 @@ void AWeapon::Grabbed(USkeletalMeshComponent* SkeletalComp, EAttachmentRule Atta
 	//에너미 깨우기
 # 
 	FTimerHandle Timer;
+	
 	for (int32 i = 0;i < Enemies.Num();i++)
 	{
 		
 		//UE_LOG(LogTemp, Warning, TEXT("%d"), Enemies.Num());
 		
 		//Enemies.Num() 을 읽는 과정이 문제가 생길때도 있고 안 생길 때도 있음..
-		Enemies[i]->FunctionComp->SetState(EEnemyState::Move);
-		Enemies[i]->FunctionComp->WakeUp();
+		if (Enemies[i]->FunctionComp != nullptr)
+		{
+			
+			Enemies[i]->FunctionComp->SetState(EEnemyState::Move);
+			Enemies[i]->FunctionComp->WakeUp();
+
+		}
 	}
 
 	
