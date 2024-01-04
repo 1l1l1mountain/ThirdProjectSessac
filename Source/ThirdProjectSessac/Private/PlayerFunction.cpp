@@ -41,6 +41,7 @@ void UPlayerFunction::SetupPlayerInputComponent( UEnhancedInputComponent* Enhanc
 
 	EnhancedInputComponent->BindAction(inputs[2],ETriggerEvent::Triggered, this, &UPlayerFunction::Grabbed);
 	EnhancedInputComponent->BindAction(inputs[2], ETriggerEvent::Completed, this, &UPlayerFunction::Dettached);
+	EnhancedInputComponent->BindAction(inputs[4], ETriggerEvent::Triggered, this, &UPlayerFunction::Jump);
 
 	// 인풋 배열 매핑 정보
 		// inputs[2] : IA_MouseInputClick_Bool_GDH
@@ -83,13 +84,14 @@ void UPlayerFunction::Grabbed()
 		}
 
 	}
-	//FText::FromString(hitInfos[idx].GetActor()->GetActorNameOrLabel());
-	//UE_LOG(LogTemp,Warning, TEXT("%s"), *hitInfos[idx].GetActor()->GetActorNameOrLabel());
+	FText::FromString(hitInfos[idx].GetActor()->GetActorNameOrLabel());
+	UE_LOG(LogTemp,Warning, TEXT("%s"), *hitInfos[idx].GetActor()->GetActorNameOrLabel());
 
 	CurrentWeapon = Cast<AWeapon>(hitInfos[idx].GetActor());
 	if (CurrentWeapon != nullptr)
 	{
-		
+		//UE_LOG(LogTemp, Warning, TEXT("Exec!!")); 
+
 		CurrentWeapon->Grabbed(Player->RightHand,EAttachmentRule::SnapToTarget); //그랩함수 구현 완료
 		UE_LOG(LogTemp, Warning, TEXT("Grabbed!!")); //추상화
 	
@@ -101,7 +103,7 @@ void UPlayerFunction::Grabbed()
 	
 	}
 
-	//DrawDebugSphere(world,StartLoc, 25.0f,30, FColor::Green ,false, 3, 0 ,1 );//세그먼트 파라미터는 뭐지?
+	DrawDebugSphere(world,StartLoc, 25.0f,30, FColor::Green ,false, 3, 0 ,1 );//세그먼트 파라미터는 뭐지?
 	
 }
 
@@ -109,6 +111,13 @@ void UPlayerFunction::Dettached()
 {
 
 	UE_LOG(LogTemp, Warning, TEXT("Dettached!!"));//추상화
+}
+
+
+void UPlayerFunction::Jump()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Jump!!"));//추상화
+
 }
 
 //기능 분할법

@@ -35,6 +35,12 @@ void UEnemyFunction::BeginPlay()
 	
 	EnemyAnim = Cast<UEnemyAnimInstance>(Enemy->GetMesh()->GetAnimInstance());
 	SetState(EEnemyState::Idle);
+
+
+	Enemy->RightHandCollision->OnComponentBeginOverlap.AddDynamic(this, &UEnemyFunction::OnComponentBeginOverlap);
+	Enemy->LeftHandCollision->OnComponentBeginOverlap.AddDynamic(this, &UEnemyFunction::OnComponentBeginOverlap);
+
+
 }
 
 
@@ -54,10 +60,6 @@ void UEnemyFunction::TickComponent(float DeltaTime, ELevelTick TickType, FActorC
 	case EEnemyState::Jump: Jump(); break;
 
 	}
-
-	Enemy->RightHandCollision->OnComponentHit.AddDynamic(this,&UEnemyFunction::OnAttackHit);
-	Enemy->LeftHandCollision->OnComponentHit.AddDynamic(this, &UEnemyFunction::OnAttackHit);
-
 }
 
 void UEnemyFunction::TickIdle()
@@ -80,11 +82,30 @@ void UEnemyFunction::TickIdle()
 	
 void UEnemyFunction::TickMove()
 {	
+	FHitResult Outhit;
+	FVector StartLoc = Enemy->GetActorLocation();
+	FVector dir = Enemy->GetActorForwardVector();
+	FVector EndLoc = StartLoc + dir * 100;
+	
+	
 	Enemy->TextComp->SetText(FText::FromString(FString("Move!!")));
 	Enemy->TextComp->SetTextRenderColor(FColor(0, 71, 255, 255));
+	CurrentTime += GetWorld()->GetDeltaSeconds();
+	if (CurrentTime < 0.3f)
+	{
+		Ai->MoveToLocation(Player->GetActorLocation());
+	}
+	else
+	{
+		FVector PlayerDir = Player->GetActorLocation() - Enemy->GetActorLocation();
+		PlayerDir.Normalize();
+		//FVector MoveLoc = StartLoc + PlayerDir * 100 * GetWorld()->GetDeltaSeconds();
+		FTransform controllerTransform = FTransform(Enemy->GetControlRotation());
+		FVector RealDir = controllerTransform.TransformVector(PlayerDir);
+		Enemy->AddMovementInput(RealDir);
 
-	Ai->MoveToLocation(Player->GetActorLocation());
-
+		if (CurrentTime > 1.0f) CurrentTime = 0;
+	}
 	Distance = FVector::Distance(Player->GetActorLocation(), Enemy->GetActorLocation());
 
 	if (Player && Distance < 200)
@@ -92,7 +113,23 @@ void UEnemyFunction::TickMove()
 
 		SetState(EEnemyState::Attack);
 	}
+
+	//앞에 장애물이 있으면 점프를 한다.
+	//라인트레이싱을 한다.
+	//앞에 플레이 제외한 장애물을 인식한다.
+	//점프 상태로 바꾼다.
 	
+	//DrawDebugLine(GetWorld(), StartLoc, EndLoc, FColor::Emerald, true, -1, 0, 10);
+	if (GetWorld()->LineTraceSingleByChannel(Outhit, StartLoc, EndLoc, ECC_Visibility))
+	{
+# 
+		UE_LOG(LogTemp, Warning, TEXT("LineTrace"));
+		if (!Cast<AMyPlayer>(Outhit.GetActor()))
+		{
+			SetState(EEnemyState::Jump);
+
+		}
+	}
 }
 
 void UEnemyFunction::TickAttack()
@@ -124,6 +161,7 @@ void UEnemyFunction::TickDie()
 
 void UEnemyFunction::SetState(EEnemyState next)
 {
+	CurrentTime = 0;
 	State = next;
 	if (EnemyAnim != nullptr)
 	{
@@ -157,15 +195,14 @@ void UEnemyFunction::Jump()
 {
 	Enemy->Jump();
 }
-
-void UEnemyFunction::OnAttackHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+// 두대씩 때리는 문제 ㅋㅋ
+void UEnemyFunction::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	//근데 왜 무한 틱처럼 발동되지?
 	//충돌이 플레이어라면?
 	if (Cast<AMyPlayer>(OtherActor))
 	{
 		//성욱이 형의 위젯을 뛰운다
-		UE_LOG(LogTemp, Warning,TEXT("%s"), *OtherActor->GetActorNameOrLabel());
+		UE_LOG(LogTemp, Warning, TEXT("%s"), *OtherActor->GetActorNameOrLabel());
 		Player->DisplayWidgetRandom();
 
 	}

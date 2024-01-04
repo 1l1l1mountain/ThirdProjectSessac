@@ -7,6 +7,8 @@
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
 #include "PlayerFunction.h"
+#include "MotionControllerComponent.h"
+#include "HeadMountedDisplayFunctionLibrary.h"
 
 //?? 헤더에 추가하면 따로 추가하지 않아도 되는건가 ??
 //#include "InputActionValue.h" 
@@ -31,15 +33,34 @@ AMyPlayer::AMyPlayer()
 	
 
 	//일단 연습용 손 장착
-	RightHand = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("RightHand"));
-	RightHand->SetupAttachment(RootComponent);
+	//RightHand = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("RightHand"));
+	//RightHand->SetupAttachment(RootComponent);
+	//ConstructorHelpers::FObjectFinder<USkeletalMesh> RightMesh(TEXT("/Script/Engine.SkeletalMesh'/Game/A_GDH/SkeletalMesh/SM_RightHand_GDH.SM_RightHand_GDH'"));
+	//if (RightMesh.Succeeded())
+	//{
+	//	RightHand->SetSkeletalMesh(RightMesh.Object);
+	//	RightHand->SetRelativeLocationAndRotation(FVector(25,15,6),FRotator(90,0,80));
+	//	/*(X = 24.554299, Y = 14.710379, Z = 6.401193)
+	//	(Pitch = 90.000000, Yaw = 0.000000, Roll = 79.999999)*/
+	//}
+
+	//vr 연동
+
+	hmdMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("HMD Mesh"));
+	hmdMesh->SetupAttachment(CameraComp);
+	rightController = CreateDefaultSubobject<UMotionControllerComponent>(TEXT("Right Controller"));
+	rightController->SetupAttachment(RootComponent);
+	rightController->SetRelativeLocation(FVector(50, 30, -10));
+	rightController->SetTrackingMotionSource(FName("Right"));
+
+	RightHand = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Right Hand Mesh"));
 	ConstructorHelpers::FObjectFinder<USkeletalMesh> RightMesh(TEXT("/Script/Engine.SkeletalMesh'/Game/A_GDH/SkeletalMesh/SM_RightHand_GDH.SM_RightHand_GDH'"));
 	if (RightMesh.Succeeded())
 	{
 		RightHand->SetSkeletalMesh(RightMesh.Object);
-		RightHand->SetRelativeLocationAndRotation(FVector(25,15,6),FRotator(90,0,80));
-		/*(X = 24.554299, Y = 14.710379, Z = 6.401193)
-		(Pitch = 90.000000, Yaw = 0.000000, Roll = 79.999999)*/
+		RightHand->SetupAttachment(rightController);
+		RightHand->SetRelativeRotation(FRotator(70, 0, 90));
+		
 	}
 
 
@@ -52,7 +73,10 @@ AMyPlayer::AMyPlayer()
 void AMyPlayer::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	//헤드 마운트 디스플레이 장비의 트래킹 (추적) 기준 위치를 Stage로 설정한다.
+	UHeadMountedDisplayFunctionLibrary::SetTrackingOrigin(EHMDTrackingOrigin::Stage);
+
 	//입력 매핑 설정하기 (암기)
 	if (APlayerController* pc = GetWorld()->GetFirstPlayerController())
 	{
@@ -90,7 +114,10 @@ void AMyPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	{
 		//함수 이벤트화
 		enhancedInputComponent->BindAction(inputs[0], ETriggerEvent::Triggered, this, &AMyPlayer::MoveInput);
+		enhancedInputComponent->BindAction(inputs[5], ETriggerEvent::Triggered, this, &AMyPlayer::MoveInput);
 		enhancedInputComponent->BindAction(inputs[1], ETriggerEvent::Triggered, this, &AMyPlayer::MouseInput);
+		enhancedInputComponent->BindAction(inputs[3], ETriggerEvent::Triggered, this, &AMyPlayer::ClickWidget);
+
 		FunctionComp->SetupPlayerInputComponent(enhancedInputComponent, inputs);
 		// 인풋 배열 매핑 정보
 		// inputs[0] : IA_MoveInput

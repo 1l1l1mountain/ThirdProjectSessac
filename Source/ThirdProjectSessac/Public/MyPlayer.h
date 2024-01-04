@@ -63,4 +63,21 @@ public:
 	//성욱이 형 함수
 	UFUNCTION(BlueprintImplementableEvent, Category = "WidgetFunction")
 	void DisplayWidgetRandom();
+
+
+
+	//vr 연동
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "MySettingsComponents")
+	class UStaticMeshComponent* hmdMesh;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "MySettingsComponents")
+	class UMotionControllerComponent* rightController;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "MySettingsComponents")
+	class UWidgetInteractionComponent* rightPointer;
+
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void ClickWidget();
+	
+
 };
