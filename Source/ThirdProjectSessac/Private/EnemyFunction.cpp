@@ -9,7 +9,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "EnemyAnimInstance.h"
 #include "Components/SphereComponent.h"
-
+#include "Weapon.h"
 // Sets default values for this component's properties
 UEnemyFunction::UEnemyFunction()
 {
@@ -60,6 +60,25 @@ void UEnemyFunction::TickComponent(float DeltaTime, ELevelTick TickType, FActorC
 	case EEnemyState::Jump: Jump(); break;
 
 	}
+	FVector StartLoc = Enemy->GetActorLocation();
+	FVector dir = Enemy->GetActorForwardVector();
+	FVector EndLoc = StartLoc + dir * 300;
+	if (GetWorld()->LineTraceSingleByChannel(Outhit, StartLoc, EndLoc, ECC_Visibility) && State != EEnemyState::Damage)
+	{
+# 
+		UE_LOG(LogTemp, Warning, TEXT("PlayerBeforeAttack"));
+		if (Cast<AWeapon>(Outhit.GetActor()))
+		{
+			UE_LOG(LogTemp, Warning, TEXT("%s"), *Outhit.GetActor()->GetActorNameOrLabel());
+			PlayMontageBeforeAttack();
+			//¾Æ¹«°Íµµ ¾ÈÇÒ·Á°í °¨.
+			SetState(EEnemyState::Damage);
+		
+		}
+	}
+
+
+
 }
 
 void UEnemyFunction::TickIdle()
@@ -141,23 +160,31 @@ void UEnemyFunction::TickAttack()
 	Distance = FVector::Distance(Player->GetActorLocation(), Enemy->GetActorLocation());
 	if (Player && Distance >= 200)
 	{
+		EnemyAnim->bIsFast = FMath::RandBool();
 		SetState(EEnemyState::Move);
 	}
 
 }
-
+//Æ½¾Æ´Ô
 void UEnemyFunction::TickDamage()
 {
-	Enemy->TextComp->SetText(FText::FromString(FString("Hp--..")));
+	
+	Enemy->TextComp->SetText(FText::FromString(FString("Hp--..OR BEFOREATTACK")));
 	Enemy->TextComp->SetTextRenderColor(FColor(255, 30, 0, 255));
-
+	
+	CurrentTime += GetWorld()->GetDeltaSeconds();
+	if (CurrentTime >= 1)
+	{
+		SetState(EEnemyState::Move);
+		Enemy->StopAnimMontage(EnemyActionMontage);
+	}  
 }
-
+//Æ½¾Æ´Ô
 void UEnemyFunction::TickDie()
 {
 	Enemy->TextComp->SetText(FText::FromString(FString("-Die-")));
 	Enemy->TextComp->SetTextRenderColor(FColor(0, 0, 0, 255));
-
+	//³ëÆ¼ÆÄÀÌÃ³¸®
 }
 
 void UEnemyFunction::SetState(EEnemyState next)
@@ -218,6 +245,46 @@ void UEnemyFunction::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComp
 		//¼º¿íÀÌ ÇüÀÇ À§Á¬À» ¶Ù¿î´Ù
 		UE_LOG(LogTemp, Warning, TEXT("%s"), *OtherActor->GetActorNameOrLabel());
 		Player->DisplayWidgetRandom();
+
+	}
+}
+
+void UEnemyFunction::PlayMontageDamage()
+{
+	int idx = FMath::RandRange(0, 1);
+	FString str = FString::Printf(TEXT("Damage%d"),idx);
+	FName sectionName = FName(*str);
+	Enemy->PlayAnimMontage(EnemyActionMontage, 1, sectionName);
+}
+
+void UEnemyFunction::PlayMontageDie()
+{
+	int idx = FMath::RandRange(0, 1);
+	FString str = FString::Printf(TEXT("HardDamage%d"), idx);
+	FName sectionName = FName(*str);
+	Enemy->PlayAnimMontage(EnemyActionMontage, 1, sectionName);
+
+}
+
+void UEnemyFunction::PlayMontageBeforeAttack()
+{
+	Enemy->PlayAnimMontage(EnemyActionMontage, 1, TEXT("BeforeAttack"));
+
+}
+
+void UEnemyFunction::OnTakeDamage()
+{
+
+	HP -= 1;
+	if (HP > 0)
+	{
+		SetState(EEnemyState::Damage);
+		PlayMontageDamage();
+	}
+	else
+	{
+		SetState(EEnemyState::Die);
+		PlayMontageDie();
 
 	}
 }

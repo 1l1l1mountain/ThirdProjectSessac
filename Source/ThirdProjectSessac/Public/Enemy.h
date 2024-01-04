@@ -45,7 +45,9 @@ public:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings")
 	class USphereComponent* LeftHandCollision;
-
+	//점프블프
 	UFUNCTION(BlueprintImplementableEvent)
 	void ActionJump();
+
+
 };

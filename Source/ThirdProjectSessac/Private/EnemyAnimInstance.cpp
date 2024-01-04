@@ -44,3 +44,16 @@ void UEnemyAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 
 
 }
+
+void UEnemyAnimInstance::AnimNotify_Damage()
+{
+	AEnemy* Enemy = Cast<AEnemy>(TryGetPawnOwner());
+	Enemy->FunctionComp->SetState(EEnemyState::Move);
+
+}
+
+void UEnemyAnimInstance::AnimNotify_Die()
+{
+	AEnemy* Enemy = Cast<AEnemy>(TryGetPawnOwner());
+	Enemy->Destroy();
+}

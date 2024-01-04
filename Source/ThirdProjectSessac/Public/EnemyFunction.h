@@ -88,4 +88,16 @@ public:
 	float CurrentTime;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings")
 	FHitResult Outhit;
+
+	
+	UPROPERTY(EditAnywhere)
+	class UAnimMontage* EnemyActionMontage;
+
+	void PlayMontageDamage();
+	void PlayMontageDie();
+	void PlayMontageBeforeAttack();
+
+	void OnTakeDamage();
+	float HP = 3;
+	
 };

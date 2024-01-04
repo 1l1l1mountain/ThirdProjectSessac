@@ -72,7 +72,7 @@ void AWeapon::Grabbed(USkeletalMeshComponent* SkeletalComp, EAttachmentRule Atta
 	for (int32 i = 0;i < Enemies.Num();i++)
 	{
 		
-		//UE_LOG(LogTemp, Warning, TEXT("%d"), Enemies.Num());
+		UE_LOG(LogTemp, Warning, TEXT("%d"), Enemies.Num());
 		
 		//Enemies.Num() 을 읽는 과정이 문제가 생길때도 있고 안 생길 때도 있음..
 		if (Enemies[i]->FunctionComp != nullptr)
