@@ -38,7 +38,10 @@ void AWideInvitationActor::Tick(float DeltaTime)
 
 void AWideInvitationActor::YES()
 {
-
+	if (paper->bIsEnabled)
+	{
+		paper->RemoveFromParent();
+	}
 }
 
 void AWideInvitationActor::NO()
