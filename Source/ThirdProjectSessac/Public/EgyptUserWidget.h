@@ -18,13 +18,13 @@ protected:
 	virtual void NativeConstruct() override;
 
 public:
-	UPROPERTY(EditAnywhere, Category = "Mysettings", meta = (BindWidget));
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mysettings", meta = (BindWidget));
 	class UImage* screen;
 
-	UPROPERTY(EditAnywhere, Category = "Mysettings", meta = (BindWidget));
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mysettings", meta = (BindWidget));
 	class UButton* btn_yes;
 
-	UPROPERTY(EditAnywhere, Category = "Mysettings", meta = (BindWidget));
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mysettings", meta = (BindWidget));
 	class UButton* btn_no;
 
 	class AWideInvitationActor* invitationActor;
