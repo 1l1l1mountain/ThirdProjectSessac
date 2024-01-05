@@ -96,7 +96,7 @@ void UEnemyFunction::TickIdle()
 		SetState(EEnemyState::Move);
 	}*/
 	//무기가 직접 틱 무브로 전환해줄예정
-	
+	//UE_LOG(LogTemp, Warning, TEXT("WHAT"));
 }
 	
 void UEnemyFunction::TickMove()
@@ -150,6 +150,8 @@ void UEnemyFunction::TickMove()
 
 		}
 	}
+	//UE_LOG(LogTemp, Warning, TEXT("WHAT"));
+	
 }
 
 void UEnemyFunction::TickAttack()
@@ -193,8 +195,8 @@ void UEnemyFunction::SetState(EEnemyState next)
 	State = next;
 	if (EnemyAnim != nullptr)
 	{
-
 		EnemyAnim->State = next; 
+
 
 	}
 	
@@ -235,6 +237,13 @@ void UEnemyFunction::Jump()
 	//}
 	
 	Enemy->ActionJump();
+	CurrentTime += GetWorld()->GetDeltaSeconds();
+	if (CurrentTime >= 1)
+	{
+		SetState(EEnemyState::Move);
+	}
+
+	//UE_LOG(LogTemp, Warning, TEXT("WHAT"));
 }
 // 두대씩 때리는 문제 ㅋㅋ
 void UEnemyFunction::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)

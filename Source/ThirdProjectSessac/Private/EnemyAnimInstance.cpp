@@ -26,8 +26,8 @@ void UEnemyAnimInstance::AnimNotify_JumpEnd()
 	AEnemy* Enemy = Cast<AEnemy>(TryGetPawnOwner());
 	if (Enemy->FunctionComp != nullptr)
 	{
-
 		Enemy->FunctionComp->SetState(EEnemyState::Move);
+
 	}
 }
 //Æ½ ºÒ·¯¿À±â
